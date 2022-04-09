@@ -18,7 +18,7 @@ Download script with this url: `https://raw.githubusercontent.com/ZoLuSs/rmmagen
 To install agent launch the script with this arguement:
 
 ```bash
-./rmmagent-linux-x64.sh install 'System type' 'Mesh agent' 'API URL' 'Client ID' 'Site ID' 'Auth Key' 'Agent Type'
+./rmmagent-linux.sh install 'System type' 'Mesh agent' 'API URL' 'Client ID' 'Site ID' 'Auth Key' 'Agent Type'
 ```
 The compiling can be quite long, don't panic and wait few minutes...
 
@@ -59,7 +59,7 @@ The argument are:
   
 ### Example
 ```bash
-./rmmagent-linux-x64.sh install amd64 "https://mesh.fqdn.com/meshagents?id=XXXXX&installflags=X&meshinstall=X" "https://api.fqdn.com" 3 1 "XXXXX" server
+./rmmagent-linux.sh install amd64 "https://mesh.fqdn.com/meshagents?id=XXXXX&installflags=X&meshinstall=X" "https://api.fqdn.com" 3 1 "XXXXX" server
 ```
 
 ## Update
@@ -67,5 +67,5 @@ The argument are:
 Simply launch the script that match your system with *update* as argument.
 
 ```bash
-./rmmagent-linux-x64.sh update
+./rmmagent-linux.sh update
 ```
