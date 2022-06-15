@@ -12,7 +12,7 @@ Download the script that match your configuration
 
 ### Tips
 
-Download script with this url: `[https://github.com/netvolt/LinuxRMM-Script/rmmagent-linux.sh]`
+Download script with this url: `https://github.com/netvolt/LinuxRMM-Script/rmmagent-linux.sh`
 
 ## Install
 To install agent launch the script with this arguement:
