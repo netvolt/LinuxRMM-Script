@@ -14,7 +14,7 @@ fi
 if [[ $1 == "help" ]]; then
         echo "There is help but more information is available at github.com/ZoLuSs/rmmagent-script"
         echo ""
-        echo "List of argument (no argument name):"
+        echo "List of INSTALL/UPDATE argument (no argument name):"
         echo "Arg 1: 'install' or 'update'"
         echo "Arg 2: System type 'amd64' 'x86' 'arm64' 'armv6'"
         echo "Arg 3: Mesh agent URL"
@@ -24,12 +24,18 @@ if [[ $1 == "help" ]]; then
         echo "Arg 7: Auth Key"
         echo "Arg 8: Agent Type 'server' or 'workstation'"
         echo ""
+        echo "List of UNINSTALL argument (no argument name):"
+        echo "Arg 1: 'uninstall'"
+        echo "Arg 2: Mesh agent FQDN (i.e. mesh.domain.com)"
+        echo "Arg 3: Mesh agent id (The id needs to have single quotes around it)"
+        echo ""
         echo "Only argument 1 is needed for update"
+        echo ""
         exit 0
 fi
 
-if [[ $1 != "install" && $1 != "update" ]]; then
-        echo "First argument can only be 'install' or 'update' !"
+if [[ $1 != "install" && $1 != "update" && $1 != "uninstall" ]]; then
+        echo "First argument can only be 'install' or 'update' or 'uninstall' !"
         echo "Type help for more information"
         exit 1
 fi
@@ -40,7 +46,7 @@ if [[ $1 == "install" && $2 == "" ]]; then
         exit 1
 fi
 
-if [[ $2 != "amd64" && $2 != "x86" && $2 != "arm64" && $2 != "armv6" ]]; then
+if [[ $1 == "install" && $2 != "amd64" && $2 != "x86" && $2 != "arm64" && $2 != "armv6" ]]; then
         echo "This argument can only be 'amd64' 'x86' 'arm64' 'armv6' !"
         echo "Type help for more information"
         exit 1
@@ -88,6 +94,18 @@ if [[ $1 == "install" && $8 != "server" && $8 != "workstation" ]]; then
         exit 1
 fi
 
+if [[ $1 == "uninstall" && $2 == "" ]]; then
+        echo "Argument 2 (Mesh agent FQDN) is empty !"
+        echo "Type help for more information"
+        exit 1
+fi
+
+if [[ $1 == "uninstall" && $3 == "" ]]; then
+        echo "Argument 3 (Mesh agent id) is empty !"
+        echo "Type help for more information"
+        exit 1
+fi
+
 ## Setting var for easy scription
 system=$2
 mesh_url=$3
@@ -96,6 +114,9 @@ rmm_client_id=$5
 rmm_site_id=$6
 rmm_auth=$7
 rmm_agent_type=$8
+## Uninstall var for easy scription
+mesh_fqdn=$2
+mesh_id=$3
 
 go_url_amd64="https://go.dev/dl/go1.18.3.linux-amd64.tar.gz"
 go_url_x86="https://go.dev/dl/go1.18.3.linux-386.tar.gz"
@@ -215,6 +236,25 @@ function check_profile () {
         source $profile_file
 }
 
+function uninstall_agent() {
+        systemctl stop tacticalagent
+        systemctl disable tacticalagent
+        rm /etc/systemd/system/tacticalagent.service
+        systemctl daemon-reload
+        rm /usr/local/bin/rmmagent
+        rm /etc/tacticalagent
+        sed -i "/export\ PATH\=\$PATH\:\/usr\/local\/go\/bin/d" /root/.profile
+}
+
+function uninstall_mesh() {
+        (wget "https://$mesh_fqdn/meshagents?script=1" -O /tmp/meshinstall.sh || wget "https://$mesh_fqdn/meshagents?script=1" --no-proxy -O /tmp/meshinstall.sh)
+        chmod 755 /tmp/meshinstall.sh
+        (/tmp/meshinstall.sh uninstall https://$mesh_fqdn $mesh_id || /tmp/meshinstall.sh uninstall uninstall uninstall https://$mesh_fqdn $mesh_id)
+        rm /tmp/meshinstall.sh
+        rm meshagent
+        rm meshagent.msh
+}
+
 case $1 in
 install)
         check_profile
@@ -230,5 +270,12 @@ update)
         agent_compile
         update_agent
         echo "Tactical Agent Update is done"
+        exit 0;;
+uninstall)
+        check_profile
+        uninstall_agent
+        uninstall_mesh
+        echo "Tactical Agent Uninstall is done"
+        echo "You may need to manually remove the agents orphaned connections on TacticalRMM and MeshCentral"
         exit 0;;
 esac
