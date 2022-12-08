@@ -119,7 +119,7 @@ function go_install() {
         export GOPATH=/usr/local/go
         export GOCACHE=/root/.cache/go-build
 
-        echo "export PATH=/usr/local/go/bin" >> /root/.profile
+        echo "export PATH=$PATH:/usr/local/go/bin" >> /root/.profile
         echo "Golang Install Done !"
 }
 
@@ -193,15 +193,35 @@ function install_mesh() {
   rm /tmp/meshagent.msh
 }
 
+function check_profile () {
+        source /etc/environment
+        profile_file="/root/.profile"
+        path_count=$(cat $profile_file | grep -o "export PATH=/usr/local/go/bin" | wc -l)
+        if [[ $path_count -ne 0 ]]; then
+                echo "Removing incorrect \$PATH variable\(s\)"
+                sed -i "/export\ PATH\=\/usr\/local\/go\/bin/d" $profile_file
+        fi
+
+        path_count=$(cat $profile_file | grep -o "export PATH=\$PATH:/usr/local/go/bin" | wc -l)
+        if [[ $path_count -ne 1 ]]; then
+                echo "Fixing \$PATH Variable"
+                sed -i "/export\ PATH\=\$PATH\:\/usr\/local\/go\/bin/d" $profile_file
+                echo "export PATH=\$PATH:/usr/local/go/bin" >> $profile_file
+        fi
+        source $profile_file
+}
+
 case $1 in
 install)
         go_install
+        check_profile
         install_mesh
         agent_compile
         install_agent
         echo "Tactical Agent Install is done"
         exit 0;;
 update)
+        check_profile
         go_install
         agent_compile
         update_agent
