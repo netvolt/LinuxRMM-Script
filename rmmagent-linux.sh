@@ -1,4 +1,10 @@
 #!/bin/bash
+if ! command -v unzip &> /dev/null
+then
+        echo "unzip could not be found. Please install unzip."
+        exit 0
+fi
+
 if [[ $1 == "" ]]; then
         echo "First argument is empty !"
         echo "Type help for more information"
