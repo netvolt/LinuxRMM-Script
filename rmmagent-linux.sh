@@ -121,11 +121,9 @@ function go_install() {
         
         tar -xvzf /tmp/golang.tar.gz -C /usr/local/
         rm /tmp/golang.tar.gz
-        export PATH=$PATH:/usr/local/go/bin
         export GOPATH=/usr/local/go
         export GOCACHE=/root/.cache/go-build
 
-        echo "export PATH=$PATH:/usr/local/go/bin" >> /root/.profile
         echo "Golang Install Done !"
 }
 
@@ -219,8 +217,8 @@ function check_profile () {
 
 case $1 in
 install)
-        go_install
         check_profile
+        go_install
         install_mesh
         agent_compile
         install_agent
