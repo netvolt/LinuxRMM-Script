@@ -86,7 +86,7 @@ The argument are:
 
 3. Mesh ID
 
-  The url givent by mesh for installing new agent.
+  The url given by mesh for installing new agent.
   Go to mesh.fqdn.com > Add agent > Linux / BSD (Uninstall) > Copy **ONLY** the last value with the single quotes.
   You are looking for a 64 charaters long value of random letter case, numbers, and special characters.
 
