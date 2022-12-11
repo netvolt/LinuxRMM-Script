@@ -30,7 +30,7 @@ The argument are:
 
 3. Mesh agent
 
-  The url givent by mesh for installing new agent.
+  The url given by mesh for installing new agent.
   Go to mesh.fqdn.com > Add agent > Installation Executable Linux / BSD / macOS > **Select the good system type**
   Copy **ONLY** the URL with the quote.
   
@@ -69,3 +69,32 @@ Simply launch the script that match your system with *update* as argument.
 ```bash
 ./rmmagent-linux.sh update
 ```
+
+## Uninstall
+To uninstall agent launch the script with this arguement:
+
+```bash
+./rmmagent-linux.sh uninstall 'Mesh FQDN' 'Mesh ID'
+```
+Note: Single quotes must be around the Mesh ID for it to uninstall the mesh agent properly
+
+The argument are:
+
+2. Mesh FQDN
+
+  Example of FQDN: mesh.fqdn.com 
+
+3. Mesh ID
+
+  The ID given by mesh for installing new agent.
+  Go to mesh.fqdn.com > Add agent > Linux / BSD (Uninstall) > Copy **ONLY** the last value with the single quotes.
+  You are looking for a 64 charaters long value of random letter case, numbers, and special characters.
+
+### Example
+```bash
+./rmmagent-linux.sh uninstall mesh.fqdn.com 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+```
+
+### WARNING
+- You should **only** attempt this if the agent removal feaure on TacticalRMM is not working.
+- Running uninstall will **not** remove the connections from the TacticalRMM and MeshCentral Dashboard. You will need to manually remove them. It only forcefully removes the agents from your linux box.
