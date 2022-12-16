@@ -1,6 +1,6 @@
 #!/bin/bash
-if ! command -v unzip &> /dev/null
-then
+check_zip=$(which unzip 2> /dev/null)
+if [[ $check_zip == "" || $check_zip =~ .*"no unzip".* ]]; then
         echo "unzip could not be found. Please install unzip."
         exit 0
 fi
