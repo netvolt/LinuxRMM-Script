@@ -20,7 +20,7 @@ To install agent launch the script with this arguement:
 ```bash
 ./rmmagent-linux.sh install 'System type' 'Mesh agent' 'API URL' 'Client ID' 'Site ID' 'Auth Key' 'Agent Type'
 ```
-The compiling can be quite long, don't panic and wait few minutes...
+The compiling can be quite long, don't panic and wait few minutes... USE THE 'SINGLE QUOTES' IN ALL FIELDS!
 
 The argument are:
 
