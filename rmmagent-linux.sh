@@ -124,28 +124,32 @@ go_url_arm64="https://go.dev/dl/go1.18.3.linux-arm64.tar.gz"
 go_url_armv6="https://go.dev/dl/go1.18.3.linux-armv6l.tar.gz"
 
 function go_install() {
-        ## Installing golang
-        case $system in
-        amd64)
-          wget -O /tmp/golang.tar.gz $go_url_amd64
+        if ! command -v go &> /dev/null; then
+                ## Installing golang
+                case $system in
+                amd64)
+                wget -O /tmp/golang.tar.gz $go_url_amd64
+                        ;;
+                x86)
+                wget -O /tmp/golang.tar.gz $go_url_x86
                 ;;
-        x86)
-          wget -O /tmp/golang.tar.gz $go_url_x86
-        ;;
-        arm64)
-          wget -O /tmp/golang.tar.gz $go_url_arm64
-        ;;
-        armv6)
-          wget -O /tmp/golang.tar.gz $go_url_armv6
-        ;;
-        esac
-        
-        tar -xvzf /tmp/golang.tar.gz -C /usr/local/
-        rm /tmp/golang.tar.gz
-        export GOPATH=/usr/local/go
-        export GOCACHE=/root/.cache/go-build
+                arm64)
+                wget -O /tmp/golang.tar.gz $go_url_arm64
+                ;;
+                armv6)
+                wget -O /tmp/golang.tar.gz $go_url_armv6
+                ;;
+                esac
+                
+                tar -xvzf /tmp/golang.tar.gz -C /usr/local/
+                rm /tmp/golang.tar.gz
+                export GOPATH=/usr/local/go
+                export GOCACHE=/root/.cache/go-build
 
-        echo "Golang Install Done !"
+                echo "Golang Install Done !"
+        else
+                echo "Go is already installed"
+        fi
 }
 
 function agent_compile() {
