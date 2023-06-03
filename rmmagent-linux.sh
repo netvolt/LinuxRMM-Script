@@ -14,8 +14,8 @@ fi
 if [[ $1 == "help" ]]; then
         echo "There is help but more information is available at github.com/ZoLuSs/rmmagent-script"
         echo ""
-        echo "List of INSTALL/UPDATE argument (no argument name):"
-        echo "Arg 1: 'install' or 'update'"
+        echo "List of INSTALL argument (no argument name):"
+        echo "Arg 1: 'install'"
         echo "Arg 2: System type 'amd64' 'x86' 'arm64' 'armv6'"
         echo "Arg 3: Mesh agent URL"
         echo "Arg 4: API URL"
@@ -24,12 +24,14 @@ if [[ $1 == "help" ]]; then
         echo "Arg 7: Auth Key"
         echo "Arg 8: Agent Type 'server' or 'workstation'"
         echo ""
+        echo "List of UPDATE argument (no argument name)"
+        echo "Arg 1: 'update'"
+        echo "Arg 2: System type 'amd64' 'x86' 'arm64' 'armv6'"
+        echo ""
         echo "List of UNINSTALL argument (no argument name):"
         echo "Arg 1: 'uninstall'"
         echo "Arg 2: Mesh agent FQDN (i.e. mesh.domain.com)"
         echo "Arg 3: Mesh agent id (The id needs to have single quotes around it)"
-        echo ""
-        echo "Only argument 1 is needed for update"
         echo ""
         exit 0
 fi
@@ -41,6 +43,13 @@ if [[ $1 != "install" && $1 != "update" && $1 != "uninstall" ]]; then
 fi
 
 if [[ $1 == "install" && $2 == "" ]]; then
+        echo "Argument 2 (System type) is empty !"
+        echo "Type help for more information"
+        exit 1
+fi
+
+
+if [[ $1 == "update" && $2 == "" ]]; then
         echo "Argument 2 (System type) is empty !"
         echo "Type help for more information"
         exit 1
