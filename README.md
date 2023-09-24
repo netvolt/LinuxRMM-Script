@@ -22,6 +22,7 @@ sudo systemctl restart gdm
 ```
 This will cause your screen to go blank for a second. You will be able to use remote desktop afterwards.
 > If you get an error like "file not found", you are probably still using Ubuntu 19 or below. On these machines, the config file will be located on /etc/gdm/custom.conf. Modify the command above accordingly.
+
 Please note that remote desktop features are only installed when you used the workstation agent. You may need to reinstall your mesh agent.
 
 ## Install
