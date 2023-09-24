@@ -14,7 +14,7 @@ Download the script that match your configuration
 
 Download script with this url: `https://raw.githubusercontent.com/netvolt/LinuxRMM-Script/main/rmmagent-linux.sh`
 
-#### Fix Blank Screen for Ubuntu Workstations (Ubuntu 16+)
+### Fix Blank Screen for Ubuntu Workstations (Ubuntu 16+)
 Ubuntu uses the wayland display manager instead of the regular x11 server. This causes MeshCentral to show a blank screen when trying to access the remote desktop feature. You can't login, view or control the client. There is a neat fix for this, so don't worry:
 ```
 sudo sed -i '/WaylandEnable/s/^#//g' /etc/gdm3/custom.conf
