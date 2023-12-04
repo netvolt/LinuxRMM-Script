@@ -127,10 +127,10 @@ rmm_agent_type=$8
 mesh_fqdn=$2
 mesh_id=$3
 
-go_url_amd64="https://go.dev/dl/go1.18.3.linux-amd64.tar.gz"
-go_url_x86="https://go.dev/dl/go1.18.3.linux-386.tar.gz"
-go_url_arm64="https://go.dev/dl/go1.18.3.linux-arm64.tar.gz"
-go_url_armv6="https://go.dev/dl/go1.18.3.linux-armv6l.tar.gz"
+go_url_amd64="https://go.dev/dl/go1.20.11.linux-amd64.tar.gz"
+go_url_x86="https://go.dev/dl/go1.20.11.linux-386.tar.gz"
+go_url_arm64="https://go.dev/dl/go1.20.11.linux-arm64.tar.gz"
+go_url_armv6="https://go.dev/dl/go1.20.11.linux-armv6l.tar.gz"
 
 function go_install() {
         if ! command -v go &> /dev/null; then
