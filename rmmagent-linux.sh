@@ -126,11 +126,13 @@ rmm_agent_type=$8
 ## Uninstall var for easy scription
 mesh_fqdn=$2
 mesh_id=$3
+## Setting Go verison to be installed
+go_version="1.21.5"
 
-go_url_amd64="https://go.dev/dl/go1.18.3.linux-amd64.tar.gz"
-go_url_x86="https://go.dev/dl/go1.18.3.linux-386.tar.gz"
-go_url_arm64="https://go.dev/dl/go1.18.3.linux-arm64.tar.gz"
-go_url_armv6="https://go.dev/dl/go1.18.3.linux-armv6l.tar.gz"
+go_url_amd64="https://go.dev/dl/go$go_version.linux-amd64.tar.gz"
+go_url_x86="https://go.dev/dl/go$go_version.linux-386.tar.gz"
+go_url_arm64="https://go.dev/dl/go$go_version.linux-arm64.tar.gz"
+go_url_armv6="https://go.dev/dl/go$go_version.linux-armv6l.tar.gz"
 
 function go_install() {
         if ! command -v go &> /dev/null; then
@@ -150,14 +152,46 @@ function go_install() {
                 ;;
                 esac
                 
+                rm -rvf /usr/local/go/
                 tar -xvzf /tmp/golang.tar.gz -C /usr/local/
                 rm /tmp/golang.tar.gz
                 export GOPATH=/usr/local/go
                 export GOCACHE=/root/.cache/go-build
 
-                echo "Golang Install Done !"
+                echo "Go is installed (version $go_current_version)."
         else
-                echo "Go is already installed"
+                # Get the current version of Go installed
+                go_current_version=$(go version | awk '{print $3}' | sed 's/go//')
+
+                if [ "$go_current_version" != "$go_version" ]; then
+                        echo "Version mismatch. Current installed version is $go_current_version. Desired version is $go_version."
+                        echo "Installing Go $go_version..."
+                        ## Installing golang
+                        case $system in
+                        amd64)
+                        wget -O /tmp/golang.tar.gz $go_url_amd64
+                                ;;
+                        x86)
+                        wget -O /tmp/golang.tar.gz $go_url_x86
+                        ;;
+                        arm64)
+                        wget -O /tmp/golang.tar.gz $go_url_arm64
+                        ;;
+                        armv6)
+                        wget -O /tmp/golang.tar.gz $go_url_armv6
+                        ;;
+                        esac
+
+                        rm -rvf /usr/local/go/
+                        tar -xvzf /tmp/golang.tar.gz -C /usr/local/
+                        rm /tmp/golang.tar.gz
+                        export GOPATH=/usr/local/go
+                        export GOCACHE=/root/.cache/go-build
+
+                        echo "Go $go_version installed."
+                else
+                        echo "Go is up to date (version $go_current_version)."
+                fi
         fi
 }
 
