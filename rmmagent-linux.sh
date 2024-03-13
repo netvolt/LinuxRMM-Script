@@ -127,7 +127,7 @@ rmm_agent_type=$8
 mesh_fqdn=$2
 mesh_id=$3
 ## Setting Go verison to be installed
-go_version="1.21.5"
+go_version="1.21.6"
 
 go_url_amd64="https://go.dev/dl/go$go_version.linux-amd64.tar.gz"
 go_url_x86="https://go.dev/dl/go$go_version.linux-386.tar.gz"
