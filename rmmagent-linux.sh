@@ -1,10 +1,4 @@
 #!/bin/bash
-check_zip=$(which unzip 2> /dev/null)
-if [[ $check_zip == "" || $check_zip =~ .*"no unzip".* ]]; then
-        echo "unzip could not be found. Please install unzip."
-        exit 0
-fi
-
 if [[ $1 == "" ]]; then
         echo "First argument is empty !"
         echo "Type help for more information"
@@ -198,9 +192,9 @@ function go_install() {
 function agent_compile() {
         ## Compiling and installing tactical agent from github
         echo "Agent Compile begin"
-        wget -O /tmp/rmmagent.zip "https://github.com/amidaware/rmmagent/archive/refs/heads/master.zip"
-        unzip /tmp/rmmagent -d /tmp/
-        rm /tmp/rmmagent.zip
+				wget -O /tmp/rmmagent.tar.gz "https://github.com/amidaware/rmmagent/archive/refs/heads/master.tar.gz"
+        tar -xf /tmp/rmmagent.tar.gz -C /tmp/
+        rm /tmp/rmmagent.tar.gz
         cd /tmp/rmmagent-master
         case $system in
         amd64)
