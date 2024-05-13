@@ -192,7 +192,7 @@ function go_install() {
 function agent_compile() {
         ## Compiling and installing tactical agent from github
         echo "Agent Compile begin"
-				wget -O /tmp/rmmagent.tar.gz "https://github.com/amidaware/rmmagent/archive/refs/heads/master.tar.gz"
+        wget -O /tmp/rmmagent.tar.gz "https://github.com/amidaware/rmmagent/archive/refs/heads/master.tar.gz"
         tar -xf /tmp/rmmagent.tar.gz -C /tmp/
         rm /tmp/rmmagent.tar.gz
         cd /tmp/rmmagent-master
