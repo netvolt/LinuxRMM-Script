@@ -44,12 +44,12 @@ The argument are:
 3. Mesh agent
 
   The url given by mesh for installing new agent.
-  Go to mesh.fqdn.com > Add agent > Installation Executable Linux / BSD / macOS > **Select the good system type**
+  Go to mesh.example.com > Add agent > Installation Executable Linux / BSD / macOS > **Select the good system type**
   Copy **ONLY** the URL with the quote.
   
 4. API URL
 
-  Your api URL for agent communication usually https://api.fqdn.com.
+  Your api URL for agent communication usually https://api.example.com.
   
 5. Client ID
 
@@ -72,7 +72,7 @@ The argument are:
   
 ### Example
 ```bash
-./rmmagent-linux.sh install 'amd64' 'https://mesh.fqdn.com/meshagents?id=XXXXX&installflags=X&meshinstall=X' 'https://api.fqdn.com' 3 1 'XXXXX' server
+./rmmagent-linux.sh install 'amd64' 'https://mesh.example.com/meshagents?id=XXXXX&installflags=X&meshinstall=X' 'https://api.example.com' 3 1 'XXXXX' server
 ```
 
 ## Update
@@ -95,17 +95,17 @@ The argument are:
 
 2. Mesh FQDN
 
-  Example of FQDN: mesh.fqdn.com 
+  Example of FQDN: mesh.example.com 
 
 3. Mesh ID
 
   The ID given by mesh for installing new agent.
-  Go to mesh.fqdn.com > Add agent > Linux / BSD (Uninstall) > Copy **ONLY** the last value with the single quotes.
+  Go to mesh.example.com > Add agent > Linux / BSD (Uninstall) > Copy **ONLY** the last value with the single quotes.
   You are looking for a 64 charaters long value of random letter case, numbers, and special characters.
 
 ### Example
 ```bash
-./rmmagent-linux.sh uninstall mesh.fqdn.com 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+./rmmagent-linux.sh uninstall mesh.example.com 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 ```
 
 ### WARNING
