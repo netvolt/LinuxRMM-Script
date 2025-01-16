@@ -24,7 +24,7 @@ if [[ $1 == "help" ]]; then
         echo ""
         echo "List of UNINSTALL argument (no argument name):"
         echo "Arg 1: 'uninstall'"
-        echo "Arg 2: Mesh agent FQDN (i.e. mesh.domain.com)"
+        echo "Arg 2: Mesh agent FQDN (i.e. mesh.example.com)"
         echo "Arg 3: Mesh agent id (The id needs to have single quotes around it)"
         echo ""
         exit 0
