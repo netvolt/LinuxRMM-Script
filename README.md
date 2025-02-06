@@ -1,13 +1,13 @@
 # rmmagent-script
 Script for one-line installation and updating of the tacticalRMM agent
 
-We dont provide technical support for this. If you need help, check the tactical RMM community.
+We dont provide technical support for this. If you need help, check the tactical RMM community first!
 
 > Scripts are now available for x64, x86, arm64, and armv6. However, only x64 and i386 have been tested on Debian 11 and Debian 10 on bare metal, VMs (Proxmox), and VPS (OVH).
 > Tested on raspberry 2B+ with armv7l (chose armv6 on install)
 
-Scripts for other platforms will be available later as I adapt the script to other platforms.
-Feel free to adapt the script and submit changes to me!
+Scripts for other platforms will be available later as we adapt the script to other platforms.
+Feel free to adapt the script and submit changes that will contribute!
 
 # Usage
 
