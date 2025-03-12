@@ -1,11 +1,13 @@
 # rmmagent-script
 Script for one-line installation and updating of the tacticalRMM agent
 
+We dont provide technical support for this. If you need help, check the tactical RMM community first!
+
 > Scripts are now available for x64, x86, arm64, and armv6. However, only x64 and i386 have been tested on Debian 11 and Debian 10 on bare metal, VMs (Proxmox), and VPS (OVH).
 > Tested on raspberry 2B+ with armv7l (chose armv6 on install)
 
-Scripts for other platforms will be available later as I adapt the script to other platforms.
-Feel free to adapt the script and submit changes to me!
+Scripts for other platforms will be available later as we adapt the script to other platforms.
+Feel free to adapt the script and submit changes that will contribute!
 
 # Usage
 
@@ -27,52 +29,66 @@ This will cause your screen to go blank for a second. You will be able to use re
 > If you encounter a 'file not found' error, you are likely using Ubuntu 19 or earlier. On these machines, the config file will be located on /etc/gdm/custom.conf. Modify the command above accordingly. <
 Please note that remote desktop features are only installed when you used the workstation agent. You may need to reinstall your mesh agent.
 
+
+## Automatically Detect System Architecture  
+
+The system architecture is now detected automatically using the following logic:  
+
+1. The `uname -m` command retrieves the current system's architecture.  
+2. A `case` statement then checks the architecture and maps it to a standard format:  
+   - `x86_64` → `amd64` (for 64-bit Intel/AMD processors)  
+   - `i386` or `i686` → `x86` (for older 32-bit Intel processors)  
+   - `aarch64` → `arm64` (for 64-bit ARM processors, like Raspberry Pi 4 and Apple M1/M2 chips)  
+   - `armv6l` → `armv6` (for older ARM devices, like Raspberry Pi Zero)  
+3. If the architecture isn't recognized, an error message is displayed, and the script exits to prevent issues.  
+
+This ensures the script adapts to different system types automatically without needing manual input.
+
+
 ## Install
 To install the agent, launch the script with this argument:
 
 ```bash
-./rmmagent-linux.sh install 'System type' 'Mesh agent' 'API URL' 'Client ID' 'Site ID' 'Auth Key' 'Agent Type'
+./rmmagent-linux.sh install 'Mesh agent' 'API URL' 'Client ID' 'Site ID' 'Auth Key' 'Agent Type'
 ```
 The compiling can be quite long, don't panic and wait few minutes... USE THE 'SINGLE QUOTES' IN ALL FIELDS!
 
 The arguments are:
 
-2. System type
 
-  Type of system. Can be 'amd64' 'x86' 'arm64' 'armv6'  
 
-3. Mesh agent
+1. Mesh agent
 
   The url given by mesh for installing new agent.
   Go to mesh.example.com > Add agent > Installation Executable Linux / BSD / macOS > **Select the good system type**
   Copy **ONLY** the URL with the quote.
   
-4. API URL
+2. API URL
 
   Your api URL for agent communication usually https://api.example.com.
   
-5. Client ID
+3. Client ID
 
   The ID of the client in wich agent will be added.
   Can be viewed by hovering over the name of the client in the dashboard.
   
-6. Site ID
+4. Site ID
 
   The ID of the site in wich agent will be added.
   Can be viewed by hovering over the name of the site in the dashboard.
   
-7. Auth Key
+5. Auth Key
 
   Authentification key given by dashboard by going to dashboard > Agents > Install agent (Windows) > Select manual and show
   Copy **ONLY** the key after *--auth*.
   
-8. Agent Type
+6. Agent Type
 
   Can be *server* or *workstation* and define the type of agent.
   
 ### Example
 ```bash
-./rmmagent-linux.sh install 'amd64' 'https://mesh.example.com/meshagents?id=XXXXX&installflags=X&meshinstall=X' 'https://api.example.com' 3 1 'XXXXX' server
+./rmmagent-linux.sh install 'https://mesh.example.com/meshagents?id=XXXXX&installflags=X&meshinstall=X' 'https://api.example.com' 3 1 'XXXXX' server
 ```
 
 ## Update
