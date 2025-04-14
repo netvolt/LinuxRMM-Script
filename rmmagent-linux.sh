@@ -103,6 +103,15 @@ function agent_compile() {
         rm -R /tmp/rmmagent-master
 }
 
+function update_agent() {
+        systemctl stop tacticalagent
+        
+        cp /tmp/temp_rmmagent /usr/local/bin/rmmagent
+        rm /tmp/temp_rmmagent
+        
+        systemctl start tacticalagent
+}
+
 function install_agent() {
         cp /tmp/temp_rmmagent /usr/local/bin/rmmagent
         /tmp/temp_rmmagent -m install -api $rmm_url -client-id $rmm_client_id -site-id $rmm_site_id -agent-type $rmm_agent_type -auth $rmm_auth
@@ -163,7 +172,7 @@ install)
 update)
         go_install
         agent_compile
-        install_agent
+        update_agent
         echo "Tactical Agent Update is done"
         exit 0;;
 uninstall)
