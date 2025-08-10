@@ -88,7 +88,7 @@ The arguments are:
   
 ### Example
 ```bash
-./rmmagent-linux.sh install 'https://mesh.example.com/meshagents?id=XXXXX&installflags=X&meshinstall=X' 'https://api.example.com' 3 1 'XXXXX' server
+./rmmagent-linux.sh install 'https://mesh.example.com' 'https://api.example.com' 3 1 'XXXXX' server
 ```
 
 ## Update
