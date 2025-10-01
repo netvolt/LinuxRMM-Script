@@ -152,7 +152,7 @@ function install_agent() {
 Description=Tactical RMM Linux Agent
 [Service]
 Type=simple
-$service_exec_line
+$agent_service_args
 User=root
 Group=root
 Restart=always
