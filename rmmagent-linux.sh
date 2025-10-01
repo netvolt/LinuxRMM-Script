@@ -1,4 +1,15 @@
 #!/bin/bash
+insecure_flag=false
+filtered_args=()
+for arg in "$@"; do
+    if [[ $arg == "--insecure" ]]; then
+        insecure_flag=true
+    else
+        filtered_args+=("$arg")
+    fi
+done
+set -- "${filtered_args[@]}"
+
 if [[ $1 == "" ]]; then
         echo "First argument is empty !"
         echo "Type help for more information"
@@ -24,6 +35,8 @@ if [[ $1 == "help" ]]; then
         echo "Arg 1: 'uninstall'"
         echo "Arg 2: Mesh agent FQDN (i.e. mesh.example.com)"
         echo "Arg 3: Mesh agent id (The id needs to have single quotes around it)"
+        echo ""
+        echo "Optional: Add '--insecure' to bypass certificate checks for Tactical RMM and Mesh connections"
         echo ""
         exit 0
 fi
@@ -64,6 +77,16 @@ rmm_auth=$6
 rmm_agent_type=$7
 mesh_fqdn=$2
 mesh_id=$3
+
+agent_service_args="-m svc"
+agent_install_insecure="false"
+mesh_wget_opts=()
+
+if [[ $insecure_flag == true ]]; then
+        agent_service_args="-insecure -m svc"
+        agent_install_insecure="true"
+        mesh_wget_opts+=(--no-check-certificate)
+fi
 
 go_version="1.21.6"
 go_url_amd64="https://go.dev/dl/go$go_version.linux-amd64.tar.gz"
@@ -114,14 +137,22 @@ function update_agent() {
 
 function install_agent() {
         cp /tmp/temp_rmmagent /usr/local/bin/rmmagent
-        /tmp/temp_rmmagent -m install -api $rmm_url -client-id $rmm_client_id -site-id $rmm_site_id -agent-type $rmm_agent_type -auth $rmm_auth
+        local -a install_cmd=(/tmp/temp_rmmagent)
+
+        if [[ $agent_install_insecure == "true" ]]; then
+                install_cmd+=(-insecure)
+        fi
+
+        install_cmd+=(-m install -api "$rmm_url" -client-id "$rmm_client_id" -site-id "$rmm_site_id" -agent-type "$rmm_agent_type" -auth "$rmm_auth")
+
+        "${install_cmd[@]}"
         rm /tmp/temp_rmmagent
         cat << "EOF" > /etc/systemd/system/tacticalagent.service
 [Unit]
 Description=Tactical RMM Linux Agent
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/rmmagent -m svc
+ExecStart=/usr/local/bin/rmmagent $agent_service_args
 User=root
 Group=root
 Restart=always
@@ -137,12 +168,12 @@ EOF
 }
 
 function install_mesh() {
-        wget -O /tmp/meshagent $mesh_url
+        wget "${mesh_wget_opts[@]}" -O /tmp/meshagent "$mesh_url"
         chmod +x /tmp/meshagent
-        mkdir /opt/tacticalmesh
+        mkdir -p /opt/tacticalmesh
         /tmp/meshagent -install --installPath="/opt/tacticalmesh"
         rm /tmp/meshagent
-        rm /tmp/meshagent.msh
+        rm -f /tmp/meshagent.msh
 }
 
 function uninstall_agent() {
@@ -155,9 +186,16 @@ function uninstall_agent() {
 }
 
 function uninstall_mesh() {
-        wget "https://$mesh_fqdn/meshagents?script=1" -O /tmp/meshinstall.sh || wget "https://$mesh_fqdn/meshagents?script=1" --no-proxy -O /tmp/meshinstall.sh
+        local url="https://$mesh_fqdn/meshagents?script=1"
+        local -a wget_opts=("${mesh_wget_opts[@]}")
+
+        if ! wget "${wget_opts[@]}" -O /tmp/meshinstall.sh "$url"; then
+                wget "${wget_opts[@]}" --no-proxy -O /tmp/meshinstall.sh "$url"
+        fi
         chmod 755 /tmp/meshinstall.sh
-        /tmp/meshinstall.sh uninstall https://$mesh_fqdn $mesh_id || /tmp/meshinstall.sh uninstall uninstall uninstall https://$mesh_fqdn $mesh_id
+        if ! /tmp/meshinstall.sh uninstall "https://$mesh_fqdn" "$mesh_id"; then
+                /tmp/meshinstall.sh uninstall uninstall uninstall "https://$mesh_fqdn" "$mesh_id"
+        fi
         rm /tmp/meshinstall.sh
 }
 

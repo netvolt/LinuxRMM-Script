@@ -44,6 +44,9 @@ The system architecture is now detected automatically using the following logic:
 
 This ensures the script adapts to different system types automatically without needing manual input.
 
+## Optional insecure flag
+
+If you are using a self-signed certificate on your mesh server, you can add the argument `--insecure` to the command to avoid certificate issues.
 
 ## Install
 To install the agent, launch the script with this argument:
