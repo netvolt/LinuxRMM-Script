@@ -147,12 +147,12 @@ function install_agent() {
 
         "${install_cmd[@]}"
         rm /tmp/temp_rmmagent
-        cat << "EOF" > /etc/systemd/system/tacticalagent.service
+        cat <<EOF > /etc/systemd/system/tacticalagent.service
 [Unit]
 Description=Tactical RMM Linux Agent
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/rmmagent $agent_service_args
+$service_exec_line
 User=root
 Group=root
 Restart=always
