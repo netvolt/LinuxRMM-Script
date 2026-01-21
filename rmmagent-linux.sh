@@ -96,6 +96,11 @@ function agent_compile() {
     tar -xf "$TMPDIR/rmmagent.tar.gz" -C "$TMPDIR/"
     rm "$TMPDIR/rmmagent.tar.gz"
     cd "$TMPDIR/rmmagent-master"
+    # Force module mode and use a local module cache
+    export GO111MODULE=on
+    export GOMODCACHE="$TMPDIR/go-mod-cache"
+    export GOCACHE="$TMPDIR/go-build-cache"
+    mkdir -p "$GOMODCACHE"
     case $system in
         amd64) env CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o "$TMPDIR/temp_rmmagent" ;;
         x86) env CGO_ENABLED=0 GOOS=linux GOARCH=386 go build -ldflags "-s -w" -o "$TMPDIR/temp_rmmagent" ;;
@@ -103,7 +108,7 @@ function agent_compile() {
         armv6) env CGO_ENABLED=0 GOOS=linux GOARCH=arm go build -ldflags "-s -w" -o "$TMPDIR/temp_rmmagent" ;;
     esac
     cd "$TMPDIR"
-    rm -R "$TMPDIR/rmmagent-master"
+    rm -R "$TMPDIR/rmmagent-master" "$GOMODCACHE" "$GOCACHE"
 }
 
 function update_agent() {
