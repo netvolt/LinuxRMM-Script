@@ -92,10 +92,11 @@ function go_install() {
 
 function agent_compile() {
     echo "Compiling agent..."
-    wget -O "$TMPDIR/rmmagent.tar.gz" "https://github.com/amidaware/rmmagent/archive/refs/heads/master.tar.gz"
+    REL_VER=$(curl -s https://api.github.com/repos/amidaware/rmmagent/releases/latest | grep '"tag_name"' | cut -d\" -f4 | sed 's/v//')
+    wget -O "$TMPDIR/rmmagent.tar.gz" "https://github.com/amidaware/rmmagent/archive/refs/tags/v$REL_VER.tar.gz"
     tar -xf "$TMPDIR/rmmagent.tar.gz" -C "$TMPDIR/"
     rm "$TMPDIR/rmmagent.tar.gz"
-    cd "$TMPDIR/rmmagent-master"
+    cd "$TMPDIR/rmmagent-$REL_VER"
     case $system in
         amd64) env CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o "$TMPDIR/temp_rmmagent" ;;
         x86) env CGO_ENABLED=0 GOOS=linux GOARCH=386 go build -ldflags "-s -w" -o "$TMPDIR/temp_rmmagent" ;;
@@ -103,7 +104,7 @@ function agent_compile() {
         armv6) env CGO_ENABLED=0 GOOS=linux GOARCH=arm go build -ldflags "-s -w" -o "$TMPDIR/temp_rmmagent" ;;
     esac
     cd "$TMPDIR"
-    rm -R "$TMPDIR/rmmagent-master"
+    rm -R "$TMPDIR/rmmagent-$REL_VER"
 }
 
 function update_agent() {
